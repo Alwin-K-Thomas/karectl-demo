@@ -6,6 +6,7 @@ resources:
   - deployment.yaml
   - service.yaml
   - ingress.yaml
+  - admin-redirect.yaml
 
 configMapGenerator:
   - name: keycloak-realm
