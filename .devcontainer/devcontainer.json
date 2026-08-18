@@ -1,0 +1,35 @@
+{
+  "name": "karectl-demo",
+  "dockerComposeFile": ["docker-compose.yml"],
+  "service": "devcontainer",
+  "workspaceFolder": "/workspace",
+  "remoteUser": "vscode",
+  "hostRequirements": {
+    "cpus": 4,
+    "memory": "16gb",
+    "storage": "32gb"
+  },
+  "forwardPorts": ["k3s-server:80"],
+  "portsAttributes": {
+    "k3s-server:80": {
+      "label": "TRE ingress",
+      "onAutoForward": "notify"
+    }
+  },
+  "remoteEnv": {
+    "CODESPACE_NAME": "${localEnv:CODESPACE_NAME}",
+    "GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN": "${localEnv:GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}",
+    "GITHUB_REPOSITORY": "${localEnv:GITHUB_REPOSITORY}",
+    "GITHUB_REF_NAME": "${localEnv:GITHUB_REF_NAME}",
+    "KUBECONFIG": "/home/vscode/.kube/config"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-kubernetes-tools.vscode-kubernetes-tools",
+        "redhat.vscode-yaml"
+      ]
+    }
+  },
+  "postCreateCommand": "bash .devcontainer/bootstrap.sh"
+}

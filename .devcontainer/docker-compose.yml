@@ -1,0 +1,41 @@
+services:
+  devcontainer:
+    build:
+      context: .
+      dockerfile: devcontainer.Dockerfile
+    container_name: karectl-demo-devcontainer
+    volumes:
+      - ..:/workspace:cached
+      - k8s-config:/kubeconfig:cached
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: /bin/sh -c "while sleep 1000; do :; done"
+    user: vscode
+    links:
+      - k3s-server
+
+  k3s-server:
+    image: "rancher/k3s:${K3S_VERSION:-v1.31.5-k3s1}"
+    hostname: k3s-server
+    command: server --flannel-backend=none --disable-network-policy --disable=traefik
+    tmpfs:
+      - /run
+      - /var/run
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 65535
+        hard: 65535
+    privileged: true
+    restart: always
+    environment:
+      - K3S_KUBECONFIG_OUTPUT=/output/kubeconfig.yaml
+      - K3S_KUBECONFIG_MODE=666
+    volumes:
+      - k3s-server:/var/lib/rancher/k3s
+      - k8s-config:/output
+    ports:
+      - "80:80"
+
+volumes:
+  k3s-server: {}
+  k8s-config: {}
