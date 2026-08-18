@@ -25,8 +25,8 @@ hub:
       _domain = os.environ["DOMAIN"]
       c.GenericOAuthenticator.oauth_callback_url = f"https://{_domain}/jupyter/hub/oauth_callback"
       c.GenericOAuthenticator.authorize_url = f"https://{_domain}/auth/realms/tre/protocol/openid-connect/auth"
-      c.GenericOAuthenticator.token_url = f"https://{_domain}/auth/realms/tre/protocol/openid-connect/token"
-      c.GenericOAuthenticator.userdata_url = f"https://{_domain}/auth/realms/tre/protocol/openid-connect/userinfo"
+      c.GenericOAuthenticator.token_url = "http://keycloak.keycloak.svc.cluster.local/auth/realms/tre/protocol/openid-connect/token"
+      c.GenericOAuthenticator.userdata_url = "http://keycloak.keycloak.svc.cluster.local/auth/realms/tre/protocol/openid-connect/userinfo"
       c.Spawner.http_timeout = 120
   resources:
     requests: { cpu: 100m, memory: 256Mi }
