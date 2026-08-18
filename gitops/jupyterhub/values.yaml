@@ -36,8 +36,6 @@ proxy:
   chp:
     resources:
       requests: { cpu: 50m, memory: 128Mi }
-  networkPolicy:
-    enabled: false
 singleuser:
   image:
     name: quay.io/jupyter/minimal-notebook
