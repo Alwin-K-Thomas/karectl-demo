@@ -16,7 +16,10 @@ services:
   k3s-server:
     image: "rancher/k3s:${K3S_VERSION:-v1.31.5-k3s1}"
     hostname: k3s-server
-    command: server --flannel-backend=none --disable-network-policy --disable=traefik
+    entrypoint:
+      - /bin/sh
+      - -c
+      - "mount --make-rshared / ; mount bpffs -t bpf /sys/fs/bpf 2>/dev/null || true ; mount --make-shared /sys/fs/bpf ; exec /bin/k3s server --flannel-backend=none --disable-network-policy --disable=traefik"
     tmpfs:
       - /run
       - /var/run
