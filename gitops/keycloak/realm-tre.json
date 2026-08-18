@@ -1,0 +1,36 @@
+{
+  "realm": "tre",
+  "enabled": true,
+  "displayName": "Karectl Demo",
+  "sslRequired": "none",
+  "registrationAllowed": false,
+  "clients": [
+    {
+      "clientId": "jupyterhub",
+      "name": "JupyterHub",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "secret": "jupyterhub-demo-secret",
+      "redirectUris": ["*"],
+      "webOrigins": ["*"],
+      "defaultClientScopes": ["openid", "profile", "email", "roles"]
+    }
+  ],
+  "users": [
+    {
+      "username": "researcher1",
+      "enabled": true,
+      "emailVerified": true,
+      "email": "researcher1@example.invalid",
+      "firstName": "Research",
+      "lastName": "User",
+      "credentials": [
+        { "type": "password", "value": "researcher", "temporary": false }
+      ],
+      "realmRoles": ["default-roles-tre"]
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak
+  namespace: keycloak
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: keycloak }
+  template:
+    metadata:
+      labels: { app: keycloak }
+    spec:
+      containers:
+        - name: keycloak
+          image: quay.io/keycloak/keycloak:26.0.7
+          args: ["start-dev", "--import-realm"]
+          env:
+            - { name: KC_BOOTSTRAP_ADMIN_USERNAME, value: admin }
+            - { name: KC_BOOTSTRAP_ADMIN_PASSWORD, value: admin }
+            - { name: KC_HTTP_ENABLED, value: "true" }
+            - { name: KC_HTTP_RELATIVE_PATH, value: /auth }
+            - name: DOMAIN
+              valueFrom:
+                configMapKeyRef:
+                  name: cluster-domain
+                  key: DOMAIN
+            - name: KC_HOSTNAME
+              value: "https://$(DOMAIN)/auth"
+            - { name: KC_HOSTNAME_STRICT, value: "false" }
+            - { name: KC_PROXY_HEADERS, value: xforwarded }
+            - { name: JAVA_OPTS_APPEND, value: "-Xms256m -Xmx1024m" }
+          ports:
+            - { containerPort: 8080, name: http }
+          volumeMounts:
+            - { name: realm, mountPath: /opt/keycloak/data/import }
+          readinessProbe:
+            httpGet: { path: /auth/realms/tre, port: 8080 }
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 30
+          resources:
+            requests: { cpu: 200m, memory: 512Mi }
+            limits: { memory: 1500Mi }
+      volumes:
+        - name: realm
+          configMap: { name: keycloak-realm }

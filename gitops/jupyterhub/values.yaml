@@ -1,0 +1,50 @@
+hub:
+  baseUrl: /jupyter
+  config:
+    JupyterHub:
+      authenticator_class: generic-oauth
+    GenericOAuthenticator:
+      client_id: jupyterhub
+      client_secret: jupyterhub-demo-secret
+      username_claim: preferred_username
+      login_service: Keycloak
+      allow_all: true
+      validate_server_cert: false
+  extraEnv:
+    - name: DOMAIN
+      valueFrom:
+        configMapKeyRef:
+          name: cluster-domain
+          key: DOMAIN
+  extraConfig:
+    domain-oauth-urls: |
+      import os
+      _domain = os.environ["DOMAIN"]
+      c.GenericOAuthenticator.oauth_callback_url = f"https://{_domain}/jupyter/hub/oauth_callback"
+      c.GenericOAuthenticator.authorize_url = f"https://{_domain}/auth/realms/tre/protocol/openid-connect/auth"
+      c.GenericOAuthenticator.token_url = f"https://{_domain}/auth/realms/tre/protocol/openid-connect/token"
+      c.GenericOAuthenticator.userdata_url = f"https://{_domain}/auth/realms/tre/protocol/openid-connect/userinfo"
+  resources:
+    requests: { cpu: 100m, memory: 256Mi }
+proxy:
+  service:
+    type: ClusterIP
+  chp:
+    resources:
+      requests: { cpu: 50m, memory: 128Mi }
+singleuser:
+  image:
+    name: quay.io/jupyter/minimal-notebook
+    tag: "2026-08-10"
+  storage:
+    type: none
+  memory: { guarantee: 512M, limit: 2G }
+  cpu: { guarantee: 0.1, limit: 1 }
+scheduling:
+  userScheduler: { enabled: false }
+prePuller:
+  hook: { enabled: false }
+  continuous: { enabled: false }
+cull:
+  enabled: true
+  timeout: 1800
