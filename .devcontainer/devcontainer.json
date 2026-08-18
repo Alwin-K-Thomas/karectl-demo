@@ -9,6 +9,9 @@
     "memory": "16gb",
     "storage": "32gb"
   },
+  "features": {
+    "ghcr.io/devcontainers/features/sshd:1": { "version": "latest" }
+  },
   "forwardPorts": ["k3s-server:80"],
   "portsAttributes": {
     "k3s-server:80": {
