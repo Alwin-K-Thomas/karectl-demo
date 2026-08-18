@@ -5,9 +5,9 @@ metadata:
   namespace: keycloak
 spec:
   parentRefs:
-    - { name: tre, namespace: kube-system }
+    - { group: gateway.networking.k8s.io, kind: Gateway, name: tre, namespace: kube-system }
   rules:
     - matches:
         - path: { type: PathPrefix, value: /auth }
       backendRefs:
-        - { name: keycloak, port: 80 }
+        - { group: "", kind: Service, name: keycloak, port: 80, weight: 1 }

@@ -5,9 +5,9 @@ metadata:
   namespace: jupyterhub
 spec:
   parentRefs:
-    - { name: tre, namespace: kube-system }
+    - { group: gateway.networking.k8s.io, kind: Gateway, name: tre, namespace: kube-system }
   rules:
     - matches:
         - path: { type: PathPrefix, value: /jupyter }
       backendRefs:
-        - { name: proxy-public, port: 80 }
+        - { group: "", kind: Service, name: proxy-public, port: 80, weight: 1 }
