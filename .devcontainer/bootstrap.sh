@@ -17,14 +17,12 @@ until kubectl version >/dev/null 2>&1; do sleep 2; done
 kubectl get nodes
 
 say "Setup Gateway API ${GATEWAY_API_VERSION} CRDs"
-kubectl apply -f "https://github.com/kubernetes-sigs/gateway-api/releases/download/${GATEWAY_API_VERSION}/experimental-install.yaml"
+kubectl apply --server-side --force-conflicts -f "https://github.com/kubernetes-sigs/gateway-api/releases/download/${GATEWAY_API_VERSION}/experimental-install.yaml"
 
 say "Setup Cilium ${CILIUM_VERSION}"
 if ! kubectl -n kube-system get daemonset cilium >/dev/null 2>&1; then
   cilium install \
     --version "${CILIUM_VERSION}" \
-    --set cni.binPath=/var/lib/rancher/k3s/data/current/bin \
-    --set cni.confPath=/var/lib/rancher/k3s/agent/etc/cni/net.d \
     --set operator.replicas=1 \
     --set kubeProxyReplacement=false \
     --set nodePort.enabled=true \
