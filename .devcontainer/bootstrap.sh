@@ -30,6 +30,7 @@ cilium status --wait --wait-duration 5m
 kubectl wait --for=condition=Ready node --all --timeout=300s
 
 say "Traefik setup"
+until kubectl -n kube-system get deploy/traefik >/dev/null 2>&1; do sleep 2; done
 kubectl -n kube-system rollout status deploy/traefik --timeout=300s
 
 say "Installing Argo CD ${ARGOCD_VERSION}"
