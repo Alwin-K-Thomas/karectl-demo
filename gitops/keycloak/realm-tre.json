@@ -16,7 +16,7 @@
       "secret": "jupyterhub-demo-secret",
       "redirectUris": ["*"],
       "webOrigins": ["*"],
-      "defaultClientScopes": ["openid", "profile", "email", "roles"]
+      "defaultClientScopes": ["profile", "email", "roles"]
     }
   ],
   "users": [

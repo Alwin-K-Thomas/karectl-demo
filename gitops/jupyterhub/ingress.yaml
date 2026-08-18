@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: jupyterhub
+  namespace: jupyterhub
+spec:
+  ingressClassName: traefik
+  rules:
+    - http:
+        paths:
+          - path: /jupyter
+            pathType: Prefix
+            backend:
+              service:
+                name: proxy-public
+                port:
+                  number: 80

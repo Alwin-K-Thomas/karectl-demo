@@ -19,7 +19,7 @@ services:
     entrypoint:
       - /bin/sh
       - -c
-      - "mount --make-rshared / ; mount bpffs -t bpf /sys/fs/bpf 2>/dev/null || true ; mount --make-shared /sys/fs/bpf ; exec /bin/k3s server --flannel-backend=none --disable-network-policy --disable=traefik"
+      - "mount --make-rshared / ; mount bpffs -t bpf /sys/fs/bpf 2>/dev/null || true ; mount --make-shared /sys/fs/bpf ; exec /bin/k3s server --flannel-backend=none --disable-network-policy"
     tmpfs:
       - /run
       - /var/run

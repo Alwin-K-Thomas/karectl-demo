@@ -3,7 +3,7 @@ kind: Kustomization
 namespace: jupyterhub
 
 resources:
-  - httproute.yaml
+  - ingress.yaml
 
 helmCharts:
   - name: jupyterhub

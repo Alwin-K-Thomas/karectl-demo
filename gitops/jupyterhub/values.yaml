@@ -1,5 +1,7 @@
 hub:
   baseUrl: /jupyter
+  networkPolicy:
+    enabled: false
   config:
     JupyterHub:
       authenticator_class: generic-oauth
@@ -10,6 +12,7 @@ hub:
       login_service: Keycloak
       allow_all: true
       validate_server_cert: false
+      scope: ["openid", "profile", "email"]
   extraEnv:
     - name: DOMAIN
       valueFrom:
@@ -24,6 +27,7 @@ hub:
       c.GenericOAuthenticator.authorize_url = f"https://{_domain}/auth/realms/tre/protocol/openid-connect/auth"
       c.GenericOAuthenticator.token_url = f"https://{_domain}/auth/realms/tre/protocol/openid-connect/token"
       c.GenericOAuthenticator.userdata_url = f"https://{_domain}/auth/realms/tre/protocol/openid-connect/userinfo"
+      c.Spawner.http_timeout = 120
   resources:
     requests: { cpu: 100m, memory: 256Mi }
 proxy:
@@ -32,6 +36,8 @@ proxy:
   chp:
     resources:
       requests: { cpu: 50m, memory: 128Mi }
+  networkPolicy:
+    enabled: false
 singleuser:
   image:
     name: quay.io/jupyter/minimal-notebook
@@ -40,6 +46,8 @@ singleuser:
     type: none
   memory: { guarantee: 512M, limit: 2G }
   cpu: { guarantee: 0.1, limit: 1 }
+  networkPolicy:
+    enabled: false
 scheduling:
   userScheduler: { enabled: false }
 prePuller:

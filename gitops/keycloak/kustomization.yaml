@@ -5,7 +5,7 @@ namespace: keycloak
 resources:
   - deployment.yaml
   - service.yaml
-  - httproute.yaml
+  - ingress.yaml
 
 configMapGenerator:
   - name: keycloak-realm
