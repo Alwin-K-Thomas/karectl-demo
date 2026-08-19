@@ -21,6 +21,7 @@ if ! kubectl -n kube-system get daemonset cilium >/dev/null 2>&1; then
   cilium install \
     --version "${CILIUM_VERSION}" \
     --set operator.replicas=1 \
+    --set kubeProxyReplacement=false \
     --set ipam.operator.clusterPoolIPv4PodCIDRList='{10.42.0.0/16}'
 fi
 
