@@ -6,3 +6,4 @@ resources:
   - keycloak.yaml
   - jupyterhub.yaml
   - jupyterhub-policy.yaml
+  - portal.yaml

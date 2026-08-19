@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: portal-index
+  namespace: portal
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <title>karectl-demo</title>
+      <style>
+        body { font-family: system-ui, sans-serif; max-width: 40rem; margin: 4rem auto; padding: 0 1rem; }
+        h1 { font-size: 1.5rem; }
+        ul { line-height: 2; }
+        a { color: #2563eb; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+      </style>
+    </head>
+    <body>
+      <h1>karectl-demo</h1>
+      <ul>
+        <li><a href="/jupyter">JupyterHub</a></li>
+        <li><a href="/argocd">ArgoCD</a></li>
+        <li><a href="/keycloak">Keycloak Console</a></li>
+      </ul>
+    </body>
+    </html>
